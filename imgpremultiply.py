@@ -13,13 +13,13 @@ import numpy
 def premultiply(file_list):
     for path in file_list:
         im = Image.open(path).convert('RGBA')
-        a = numpy.fromstring(im.tostring(), dtype=numpy.uint8)
+        a = numpy.fromstring(im.tobytes(), dtype=numpy.uint8)
         alphaLayer = a[3::4] / 255.0
         a[::4]  *= alphaLayer
         a[1::4] *= alphaLayer
         a[2::4] *= alphaLayer
 
-        im = Image.fromstring("RGBA", im.size, a.tostring())
+        im = Image.frombytes("RGBA", im.size, a.tostring())
         im.save(path)
         print(path)
     
